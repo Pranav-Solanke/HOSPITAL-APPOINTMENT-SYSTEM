@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lenovo\\source\\repos\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj": {}
+    "C:\\Users\\ASUS\\Desktop\\CDAC PROJECT\\Final\\New_Project\\New_Project\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lenovo\\source\\repos\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj": {
+    "C:\\Users\\ASUS\\Desktop\\CDAC PROJECT\\Final\\New_Project\\New_Project\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lenovo\\source\\repos\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj",
+        "projectUniqueName": "C:\\Users\\ASUS\\Desktop\\CDAC PROJECT\\Final\\New_Project\\New_Project\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj",
         "projectName": "HospitalAppointment.API",
-        "projectPath": "C:\\Users\\Lenovo\\source\\repos\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lenovo\\source\\repos\\HospitalAppointmentSystem\\HospitalAppointment.API\\obj\\",
+        "projectPath": "C:\\Users\\ASUS\\Desktop\\CDAC PROJECT\\Final\\New_Project\\New_Project\\HospitalAppointmentSystem\\HospitalAppointment.API\\HospitalAppointment.API.csproj",
+        "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ASUS\\Desktop\\CDAC PROJECT\\Final\\New_Project\\New_Project\\HospitalAppointmentSystem\\HospitalAppointment.API\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

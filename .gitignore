@@ -1,0 +1,15 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+
+# ASP.NET
+*.dll
+*.pdb
+
+# React
+node_modules/
+dist/
+
+# Logs
+*.log

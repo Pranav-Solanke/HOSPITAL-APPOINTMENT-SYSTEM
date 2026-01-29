@@ -46,5 +46,32 @@ namespace HospitalAppointment.API.Services
             _context.SaveChanges();
 
         }
+
+        public void BlockDate(BlockDateDto dto)
+        {
+            var date = dto.Date.Date;
+
+            // prevent duplicate block
+            bool alreadyBlocked = _context.Appointments.Any(a =>
+                a.DoctorId == dto.DoctorId &&
+                a.AppointmentDate.Date == date &&
+                a.IsBlocked
+            );
+
+            if (alreadyBlocked)
+                throw new Exception("Date already blocked");
+
+            var block = new Appointment
+            {
+                DoctorId = dto.DoctorId,
+                AppointmentDate = date,
+                Status = "Blocked",
+                IsBlocked = true
+            };
+
+            _context.Appointments.Add(block);
+            _context.SaveChanges();
+        }
+
     }
 }

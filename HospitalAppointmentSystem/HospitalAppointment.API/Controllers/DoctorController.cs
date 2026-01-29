@@ -9,10 +9,15 @@ namespace HospitalAppointment.API.Controllers
     public class DoctorController : ControllerBase
     {
         private readonly IDoctorService _doctorService;
+        private readonly IAppointmentService _appointmentService; // ✅ ADD
 
-        public DoctorController(IDoctorService doctorService)
+        public DoctorController(
+            IDoctorService doctorService,
+            IAppointmentService appointmentService   // ✅ ADD
+        )
         {
             _doctorService = doctorService;
+            _appointmentService = appointmentService; // ✅ ADD
         }
 
         [HttpGet]
@@ -33,5 +38,22 @@ namespace HospitalAppointment.API.Controllers
             _doctorService.AddDoctor(doctorDto);
             return Ok("Doctor added successfully");
         }
+
+        // ==================================================
+        // ✅ ADD THIS METHOD (FIX DOCTOR APPOINTMENTS)
+        // ==================================================
+        [HttpGet("appointments/{doctorId}")]
+        public IActionResult GetDoctorAppointments(int doctorId)
+        {
+            return Ok(_appointmentService.GetAppointmentsByDoctor(doctorId));
+        }
+
+        [HttpPost("block-date")]
+        public IActionResult BlockDate([FromBody] BlockDateDto dto)
+        {
+            _doctorService.BlockDate(dto);
+            return Ok("Date blocked successfully");
+        }
+
     }
 }

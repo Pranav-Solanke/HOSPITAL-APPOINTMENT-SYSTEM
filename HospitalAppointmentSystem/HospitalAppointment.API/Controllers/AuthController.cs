@@ -18,8 +18,16 @@ namespace HospitalAppointment.API.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] LoginRequestDto dto)
         {
-            var result = _authService.Login(dto);
-            return Ok(result);
+            try
+            {
+                var result = _authService.Login(dto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(ex.Message);
+            }
         }
     }
 }
+    

@@ -1,16 +1,21 @@
-﻿using HospitalAppointment.API.Models;
-using HospitalAppointment.API.DTOs;
+﻿using HospitalAppointment.API.DTOs;
+using HospitalAppointment.API.Models;
 
-namespace HospitalAppointment.API.Interfaces
+public interface IAppointmentService
 {
-    public interface IAppointmentService
-    {
-        List<Appointment> GetAllAppointments();
-        void BookAppointment(CreateAppointmentDto appointmentDto);
+    // Booking
+    void BookAppointment(CreateAppointmentDto dto);
 
-        void BlockSlot(CreateBlockSlotDto blockSlotDto);
-        List<Appointment> GetPastAppointmentsByPatient(int patientId);
-        List<Appointment> GetAllPastAppointments(); // for admin
+    // Blocking
+    void BlockDate(CreateBlockSlotDto dto);
 
-    }
+    // Patient
+    Appointment? GetCurrentAppointmentByPatient(int patientId);
+    List<Appointment> GetPastAppointmentsByPatient(int patientId);
+
+    // Doctor
+    List<Appointment> GetAppointmentsByDoctor(int doctorId);
+
+    // Admin
+    List<Appointment> GetAllAppointments();
 }

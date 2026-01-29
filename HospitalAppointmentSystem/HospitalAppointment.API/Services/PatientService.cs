@@ -14,8 +14,6 @@ namespace HospitalAppointment.API.Services
             _context = context;
         }
 
-        // ---------------- PATIENT ----------------
-
         public List<Patient> GetAllPatients()
         {
             return _context.Patients.ToList();
@@ -29,15 +27,13 @@ namespace HospitalAppointment.API.Services
                 Email = dto.Email,
                 Password = dto.Password,
                 Age = dto.Age,
-                Gender = dto.Gender
+                Gender = dto.Gender,
+                PhoneNumber = dto.PhoneNumber
             };
 
             _context.Patients.Add(patient);
             _context.SaveChanges();
-
         }
-
-        // ---------------- HEALTH HISTORY ----------------
 
         public void AddHealthHistory(CreatePatientHealthHistoryDto dto)
         {
@@ -60,6 +56,5 @@ namespace HospitalAppointment.API.Services
                 .OrderByDescending(h => h.CreatedDate)
                 .ToList();
         }
-
     }
 }

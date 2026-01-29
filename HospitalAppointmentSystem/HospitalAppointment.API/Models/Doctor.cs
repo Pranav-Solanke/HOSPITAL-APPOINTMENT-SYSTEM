@@ -25,7 +25,8 @@ namespace HospitalAppointment.API.Models
         [ForeignKey(nameof(SpecializationId))]
         public Specialization Specialization { get; set; } = null!;
 
-        public string Password { get; set; } = string.Empty;
+        [Required]
+        public string Password { get; set; } 
 
     }
 }

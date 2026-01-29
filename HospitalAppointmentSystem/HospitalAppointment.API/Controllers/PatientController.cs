@@ -27,5 +27,19 @@ namespace HospitalAppointment.API.Controllers
             _patientService.AddPatient(dto);
             return Ok("Patient registered successfully");
         }
+
+        // ✅ ADD — HEALTH HISTORY (NO LOGIC CHANGE)
+        [HttpPost("history")]
+        public IActionResult AddHealthHistory([FromBody] CreatePatientHealthHistoryDto dto)
+        {
+            _patientService.AddHealthHistory(dto);
+            return Ok("Health history added");
+        }
+
+        [HttpGet("history/{patientId}")]
+        public IActionResult GetHealthHistory(int patientId)
+        {
+            return Ok(_patientService.GetHealthHistoryByPatient(patientId));
+        }
     }
 }

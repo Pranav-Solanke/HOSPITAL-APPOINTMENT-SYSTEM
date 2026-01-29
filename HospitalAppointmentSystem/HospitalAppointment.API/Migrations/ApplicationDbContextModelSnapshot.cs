@@ -89,6 +89,10 @@ namespace HospitalAppointment.API.Migrations
 
                     b.HasKey("AppointmentId");
 
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
                     b.ToTable("Appointments");
                 });
 
@@ -134,7 +138,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "cardio1@hospital.com",
                             FullName = "Dr. Ajit Sharma",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000001",
                             SpecializationId = 1
                         },
@@ -144,7 +148,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "cardio2@hospital.com",
                             FullName = "Dr. Rohan Patil",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000002",
                             SpecializationId = 1
                         },
@@ -154,7 +158,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "cardio3@hospital.com",
                             FullName = "Dr. Shreya Agarwal",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000003",
                             SpecializationId = 1
                         },
@@ -164,7 +168,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "neuro1@hospital.com",
                             FullName = "Dr. Siddhat Nikam",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000004",
                             SpecializationId = 2
                         },
@@ -174,7 +178,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "neuro2@hospital.com",
                             FullName = "Dr. Manisha Joshi",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000005",
                             SpecializationId = 2
                         },
@@ -184,7 +188,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "neuro3@hospital.com",
                             FullName = "Dr. Sanket Kulkarni",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000006",
                             SpecializationId = 2
                         },
@@ -194,7 +198,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "ortho1@hospital.com",
                             FullName = "Dr. Abhishek Narkhede",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000007",
                             SpecializationId = 3
                         },
@@ -204,7 +208,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "ortho2@hospital.com",
                             FullName = "Dr. Atharva Ingle",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000008",
                             SpecializationId = 3
                         },
@@ -214,7 +218,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "ortho3@hospital.com",
                             FullName = "Dr. Shruti Patil",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000009",
                             SpecializationId = 3
                         },
@@ -224,7 +228,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "derma1@hospital.com",
                             FullName = "Dr. Vaibhav Kamble",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000010",
                             SpecializationId = 4
                         },
@@ -234,7 +238,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "derma2@hospital.com",
                             FullName = "Dr. Vijay Chavan",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000011",
                             SpecializationId = 4
                         },
@@ -244,7 +248,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "derma3@hospital.com",
                             FullName = "Dr. Sakshi Salve",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000012",
                             SpecializationId = 4
                         },
@@ -254,7 +258,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "gm1@hospital.com",
                             FullName = "Dr. GM One",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000013",
                             SpecializationId = 5
                         },
@@ -264,7 +268,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "gm2@hospital.com",
                             FullName = "Dr. GM Two",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000014",
                             SpecializationId = 5
                         },
@@ -274,7 +278,7 @@ namespace HospitalAppointment.API.Migrations
                             Email = "gm3@hospital.com",
                             FullName = "Dr. GM Three",
                             IsActive = true,
-                            Password = "",
+                            Password = "doctor@123",
                             PhoneNumber = "900000015",
                             SpecializationId = 5
                         });
@@ -343,7 +347,7 @@ namespace HospitalAppointment.API.Migrations
                     b.ToTable("PatientHealthHistories");
                 });
 
-            modelBuilder.Entity("HospitalAppointment.API.Models.Specialization", b =>
+            modelBuilder.Entity("Specialization", b =>
                 {
                     b.Property<int>("SpecializationId")
                         .ValueGeneratedOnAdd()
@@ -387,9 +391,28 @@ namespace HospitalAppointment.API.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HospitalAppointment.API.Models.Appointment", b =>
+                {
+                    b.HasOne("HospitalAppointment.API.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HospitalAppointment.API.Models.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("HospitalAppointment.API.Models.Doctor", b =>
                 {
-                    b.HasOne("HospitalAppointment.API.Models.Specialization", "Specialization")
+                    b.HasOne("Specialization", "Specialization")
                         .WithMany("Doctors")
                         .HasForeignKey("SpecializationId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -409,7 +432,7 @@ namespace HospitalAppointment.API.Migrations
                     b.Navigation("Patient");
                 });
 
-            modelBuilder.Entity("HospitalAppointment.API.Models.Specialization", b =>
+            modelBuilder.Entity("Specialization", b =>
                 {
                     b.Navigation("Doctors");
                 });

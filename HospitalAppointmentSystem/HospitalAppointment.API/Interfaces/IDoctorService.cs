@@ -8,5 +8,8 @@ namespace HospitalAppointment.API.Interfaces
         List<Doctor> GetAllDoctors();
         List<Doctor> GetDoctorsBySpecialization(int specializationId);
         void AddDoctor(CreateDoctorDto doctorDto);
+
+        void BlockDate(BlockDateDto dto);
+
     }
 }

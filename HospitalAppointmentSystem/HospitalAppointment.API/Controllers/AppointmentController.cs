@@ -8,44 +8,26 @@ namespace HospitalAppointment.API.Controllers
     [Route("api/[controller]")]
     public class AppointmentController : ControllerBase
     {
-        private readonly IAppointmentService _appointmentService;
+        private readonly IAppointmentService _service;
 
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService service)
         {
-            _appointmentService = appointmentService;
-        }
-
-        [HttpGet]
-        public IActionResult GetAllAppointments()
-        {
-            return Ok(_appointmentService.GetAllAppointments());
+            _service = service;
         }
 
         [HttpPost]
-        public IActionResult BookAppointment(CreateAppointmentDto appointmentDto)
+        public IActionResult BookAppointment(CreateAppointmentDto dto)
         {
-            _appointmentService.BookAppointment(appointmentDto);
-            return Ok("Appointment booked successfully");
+            _service.BookAppointment(dto);
+            return Ok("Booking confirmed");
         }
 
+        // ✅ THIS WAS MISSING
         [HttpPost("block")]
-        public IActionResult BlockSlot([FromBody] CreateBlockSlotDto dto)
+        public IActionResult BlockDate([FromBody] CreateBlockSlotDto dto)
         {
-            _appointmentService.BlockSlot(dto);
-            return Ok("Slot blocked successfully");
-        }
-        // PATIENT VIEW
-        [HttpGet("patient/{patientId}/past")]
-        public IActionResult GetPatientPastAppointments(int patientId)
-        {
-            return Ok(_appointmentService.GetPastAppointmentsByPatient(patientId));
-        }
-
-        // ADMIN VIEW
-        [HttpGet("admin/past")]
-        public IActionResult GetAllPastAppointments()
-        {
-            return Ok(_appointmentService.GetAllPastAppointments());
+            _service.BlockDate(dto);
+            return Ok("Date blocked successfully");
         }
 
     }

@@ -3,6 +3,7 @@ using HospitalAppointment.API.DTOs;
 using HospitalAppointment.API.Helpers;
 using HospitalAppointment.API.Interfaces;
 using HospitalAppointment.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HospitalAppointment.API.Services
 {
@@ -17,140 +18,123 @@ namespace HospitalAppointment.API.Services
             _logger = logger;
         }
 
-        // =========================
-        // GET ALL APPOINTMENTS
-        // =========================
-        public List<Appointment> GetAllAppointments()
+        public void BookAppointment(CreateAppointmentDto dto)
         {
-            return _context.Appointments.ToList();
+            var date = dto.AppointmentDate.Date;
+
+            if (date < DateTime.Today)
+                throw new Exception("Cannot book past date");
+
+            if (date.DayOfWeek == DayOfWeek.Sunday)
+                throw new Exception("No appointments on Sunday");
+
+            bool blocked = _context.Appointments.Any(a =>
+                a.DoctorId == dto.DoctorId &&
+                a.AppointmentDate.Date == date &&
+                a.IsBlocked
+            );
+
+            if (blocked)
+                throw new Exception("Doctor has blocked this date");
+
+            bool exists = _context.Appointments.Any(a =>
+                a.DoctorId == dto.DoctorId &&
+                a.AppointmentDate.Date == date &&
+                a.Status == "Booked"
+            );
+
+            if (exists)
+                throw new Exception("Doctor already booked on this date");
+
+            _context.Appointments.Add(new Appointment
+            {
+                DoctorId = dto.DoctorId,
+                PatientId = dto.PatientId,
+                AppointmentDate = date,
+                Status = "Booked",
+                IsBlocked = false
+            });
+
+            _context.SaveChanges();
+            _logger.Log("Appointment booked successfully");
         }
 
-        // =========================
-        // BOOK APPOINTMENT (FULL RULES)
-        // =========================
-        public void BookAppointment(CreateAppointmentDto appointmentDto)
+        // ✅ BLOCK DATE (THIS WAS MISSING)
+        public void BlockDate(CreateBlockSlotDto dto)
         {
-            try
+            var date = dto.AppointmentDate.Date;
+
+            if (date < DateTime.Today)
+                throw new Exception("Cannot block past dates");
+
+            bool exists = _context.Appointments.Any(a =>
+                a.DoctorId == dto.DoctorId &&
+                a.AppointmentDate.Date == date
+            );
+
+            if (exists)
+                throw new Exception("Date already booked or blocked");
+
+            _context.Appointments.Add(new Appointment
             {
-                var date = appointmentDto.AppointmentDate;
+                DoctorId = dto.DoctorId,
+                AppointmentDate = date,
+                Status = "Blocked",
+                IsBlocked = true
+            });
 
-                //  Sunday not allowed
-                if (date.DayOfWeek == DayOfWeek.Sunday)
-                    throw new Exception("No appointments allowed on Sunday");
-
-                int hour = date.Hour;
-
-                //  Time rules
-                if (date.DayOfWeek == DayOfWeek.Saturday)
-                {
-                    if (hour < 10 || hour >= 19)
-                        throw new Exception("Saturday timing is 10 AM to 7 PM");
-                }
-                else
-                {
-                    if (hour < 9 || hour >= 21)
-                        throw new Exception("Timing is 9 AM to 9 PM");
-                }
-
-                //  Check if slot already booked OR blocked
-                bool slotTaken = _context.Appointments.Any(a =>
-                    a.DoctorId == appointmentDto.DoctorId &&
-                    a.AppointmentDate == appointmentDto.AppointmentDate &&
-                    (a.Status == "Booked" || a.IsBlocked)
-                );
-
-                if (slotTaken)
-                    throw new Exception("This time slot is not available");
-
-                //  Book appointment
-                var appointment = new Appointment
-                {
-                    DoctorId = appointmentDto.DoctorId,
-                    PatientId = appointmentDto.PatientId,
-                    AppointmentDate = appointmentDto.AppointmentDate,
-                    Status = "Booked",
-                    IsBlocked = false
-                };
-
-                _context.Appointments.Add(appointment);
-                _context.SaveChanges();
-
-                //  LOG SUCCESS
-                _logger.Log(
-                    $"APPOINTMENT BOOKED | DoctorId={appointmentDto.DoctorId}, PatientId={appointmentDto.PatientId}, Time={appointmentDto.AppointmentDate}"
-                );
-            }
-            catch (Exception ex)
-            {
-                //  LOG ERROR
-                _logger.Log($"BOOK APPOINTMENT ERROR | {ex.Message}");
-                throw;
-            }
+            _context.SaveChanges();
+            _logger.Log($"Date blocked: Doctor={dto.DoctorId}, Date={date}");
         }
 
-        // =========================
-        // DOCTOR BLOCKS SLOT
-        // =========================
-        public void BlockSlot(CreateBlockSlotDto blockSlotDto)
+        public Appointment? GetCurrentAppointmentByPatient(int patientId)
         {
-            try
-            {
-                bool exists = _context.Appointments.Any(a =>
-                    a.DoctorId == blockSlotDto.DoctorId &&
-                    a.AppointmentDate == blockSlotDto.AppointmentDate
-                );
-
-                if (exists)
-                    throw new Exception("Slot already exists");
-
-                var block = new Appointment
-                {
-                    DoctorId = blockSlotDto.DoctorId,
-                    AppointmentDate = blockSlotDto.AppointmentDate,
-                    Status = "Blocked",
-                    IsBlocked = true
-                };
-
-                _context.Appointments.Add(block);
-                _context.SaveChanges();
-
-                //  LOG BLOCK
-                _logger.Log(
-                    $"SLOT BLOCKED | DoctorId={blockSlotDto.DoctorId}, Time={blockSlotDto.AppointmentDate}"
-                );
-            }
-            catch (Exception ex)
-            {
-                //  LOG ERROR
-                _logger.Log($"BLOCK SLOT ERROR | {ex.Message}");
-                throw;
-            }
+            return _context.Appointments
+                .Include(a => a.Doctor)
+                    .ThenInclude(d => d.Specialization)
+                .Where(a =>
+                    a.PatientId == patientId &&
+                    a.AppointmentDate >= DateTime.Today &&
+                    a.Status == "Booked"
+                )
+                .OrderBy(a => a.AppointmentDate)
+                .FirstOrDefault();
         }
 
-        // =========================
-        // PATIENT: HIS PAST APPOINTMENTS ONLY
-        // =========================
         public List<Appointment> GetPastAppointmentsByPatient(int patientId)
         {
             return _context.Appointments
+                .Include(a => a.Doctor)
+                    .ThenInclude(d => d.Specialization)
                 .Where(a =>
                     a.PatientId == patientId &&
-                    a.AppointmentDate < DateTime.Now &&
+                    a.AppointmentDate < DateTime.Today &&
                     a.Status == "Booked"
                 )
+                .OrderByDescending(a => a.AppointmentDate)
                 .ToList();
         }
 
-        // =========================
-        // ADMIN: ALL PAST APPOINTMENTS
-        // =========================
-        public List<Appointment> GetAllPastAppointments()
+        public List<Appointment> GetAppointmentsByDoctor(int doctorId)
         {
             return _context.Appointments
+                .Include(a => a.Patient)
                 .Where(a =>
-                    a.AppointmentDate < DateTime.Now &&
+                    a.DoctorId == doctorId &&
+                    a.AppointmentDate >= DateTime.Today &&
                     a.Status == "Booked"
                 )
+                .OrderBy(a => a.AppointmentDate)
+                .ToList();
+        }
+
+        public List<Appointment> GetAllAppointments()
+        {
+            return _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                    .ThenInclude(d => d.Specialization)
+                .OrderByDescending(a => a.AppointmentDate)
                 .ToList();
         }
     }

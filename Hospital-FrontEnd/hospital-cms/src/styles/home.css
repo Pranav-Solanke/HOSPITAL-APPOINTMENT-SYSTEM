@@ -1,0 +1,18 @@
+.hero-section {
+  height: 90vh;
+  background: Soft White(
+      rgba(216, 225, 33, 0.318),
+      rgba(0, 0, 0, 0.6)
+    ),
+    url("https://images.unsplash.com/photo-1580281657521-7c4e52a74b35");
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-section h1 {
+  color: #003366;
+}
+
+.hero-section p {
+  max-width: 600px;
+}
