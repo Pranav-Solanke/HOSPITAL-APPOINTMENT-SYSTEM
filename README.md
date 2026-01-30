@@ -36,4 +36,7 @@ It allows patients to book appointments, doctors to manage schedules, and admins
 ```bash
 dotnet restore
 dotnet run
+```
+## 📸 Application Screenshots
+![Home Page](screenshots/home.jpeg)
 
