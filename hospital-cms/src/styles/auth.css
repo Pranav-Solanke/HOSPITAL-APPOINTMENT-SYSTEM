@@ -1,0 +1,13 @@
+/* src/styles/auth.css */
+
+body {
+  background-color: #1976D2;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+input {
+  height: 45px;
+}
