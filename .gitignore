@@ -1,15 +1,14 @@
 # Visual Studio
 .vs/
+
+# .NET build output
 bin/
 obj/
 
-# ASP.NET
-*.dll
-*.pdb
-
-# React
+# Node
 node_modules/
-dist/
 
-# Logs
-*.log
+# OS files
+Thumbs.db
+.DS_Store
+
