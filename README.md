@@ -68,6 +68,3 @@ npm run dev
 ### 📊 All Appointments
 ![All Appointments](screenshots/all-appointments.jpeg)
 
-## 📸 Application Screenshots
-![Home Page](screenshots/home.jpeg)
-
