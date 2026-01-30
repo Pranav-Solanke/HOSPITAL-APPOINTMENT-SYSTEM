@@ -37,32 +37,3 @@ It allows patients to book appointments, doctors to manage schedules, and admins
 dotnet restore
 dotnet run
 
-### Frontend
-```bash
-npm install
-npm run dev
-## 📸 Application Screenshots
-
-### 🏠 Home Page
-![Home Page](screenshots/home.jpeg)
-
-### 🧑 Patient Registration
-![Patient Registration](screenshots/patient-register.jpeg)
-
-### 👤 Patient Dashboard
-![Patient Dashboard](screenshots/patient-dashboard.jpeg)
-
-### 📅 Book Appointment
-![Book Appointment](screenshots/book-appointment.jpeg)
-
-### 🛠️ Admin Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.jpeg)
-
-### ➕ Register Doctor
-![Register Doctor](screenshots/register-doctor.jpeg)
-
-### 📋 Registered Patients
-![Registered Patients](screenshots/patient-list.jpeg)
-
-### 📊 All Appointments
-![All Appointments](screenshots/all-appointments.jpeg)
