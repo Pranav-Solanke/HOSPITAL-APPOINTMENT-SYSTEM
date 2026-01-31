@@ -39,7 +39,7 @@ dotnet run
 ```
 ### Frontend
 ```bash
-npm install
+npm install 
 npm run dev 
 ```
 ## 📸 Application Screenshots
