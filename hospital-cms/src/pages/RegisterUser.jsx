@@ -12,15 +12,27 @@ function RegisterUser() {
     password: "",
   });
 
-  // ✅ Error state added (frontend only)
+  // ✅ NEW STATES (added only)
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
 
-  // ✅ Email regex (lightweight)
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
+
+  // ✅ VALIDATION CHECK FOR BUTTON
+  const isValid =
+    form.fullName &&
+    form.age >= 1 &&
+    form.age <= 100 &&
+    form.gender &&
+    emailRegex.test(form.email) &&
+    /^[0-9]{10}$/.test(form.phoneNumber) &&
+    form.password.length >= 8 &&
+    form.password === confirmPassword;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,29 +40,12 @@ function RegisterUser() {
 
     const { fullName, age, gender, email, phoneNumber, password } = form;
 
-    // 🔍 FRONTEND VALIDATION (added only)
-    if (!fullName || !age || !gender || !email || !phoneNumber || !password) {
-      setError("All fields are required");
-      return;
-    }
-
-    if (!emailRegex.test(email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters long");
-      return;
-    }
-
-    if (!/^[0-9]{10}$/.test(phoneNumber)) {
-      setError("Phone number must be exactly 10 digits");
+    if (!isValid) {
+      setError("Please fill all fields correctly");
       return;
     }
 
     try {
-      // ✅ EXISTING BACKEND LOGIC — UNTOUCHED
       await api.post("/Patient", form);
       alert("Patient registered successfully");
 
@@ -62,6 +57,7 @@ function RegisterUser() {
         phoneNumber: "",
         password: "",
       });
+      setConfirmPassword("");
     } catch {
       alert("Registration failed");
     }
@@ -73,7 +69,6 @@ function RegisterUser() {
       <div className="container mt-4">
         <h3>Patient Registration</h3>
 
-        {/* ✅ Error message display */}
         {error && <p className="text-danger">{error}</p>}
 
         <form onSubmit={handleSubmit} className="col-md-6 mt-3">
@@ -122,16 +117,50 @@ function RegisterUser() {
             onChange={handleChange}
           />
 
+          {/* PASSWORD WITH EYE BUTTON */}
+          <div className="mb-2 position-relative">
+            <input
+              className="form-control"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              value={form.password}
+              onChange={handleChange}
+            />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "8px",
+                cursor: "pointer",
+                fontSize: "14px",
+                color: "blue"
+              }}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </span>
+          </div>
+
+          {/* CONFIRM PASSWORD */}
           <input
             className="form-control mb-3"
-            name="password"
-            type="password"
-            placeholder="Password"
-            value={form.password}
-            onChange={handleChange}
+            type={showPassword ? "text" : "password"}
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <button className="btn btn-success w-100">Register</button>
+          <button
+            className="btn btn-success w-100"
+            disabled={!isValid}
+            style={{
+              opacity: isValid ? 1 : 0.5,
+              cursor: isValid ? "pointer" : "not-allowed",
+            }}
+          >
+            Register
+          </button>
         </form>
       </div>
     </>

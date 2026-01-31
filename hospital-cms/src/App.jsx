@@ -8,7 +8,6 @@ import RegisterUser from "./pages/RegisterUser.jsx";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
 
-
 /* DASHBOARDS */
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import DoctorDashboard from "./pages/DoctorDashboard.jsx";
@@ -33,88 +32,39 @@ import CurrentAppointment from "./pages/patient/CurrentAppointment.jsx";
 import ManageSlots from "./pages/doctor/ManageSlots.jsx";
 import DoctorAppointments from "./pages/doctor/DoctorAppointments.jsx";
 
+/* PASSWORD RESET */
+import ForgotPassword from "./pages/ForgotPassword";
+
+
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* PUBLIC */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register-user" element={<RegisterUser />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<ContactUs />} />
 
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        {/* DASHBOARDS */}
-        <Route
-          path="/admin-dashboard"
-          element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>}
-        />
+        <Route path="/admin-dashboard" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/doctor-dashboard" element={<ProtectedRoute><DoctorDashboard /></ProtectedRoute>} />
+        <Route path="/patient-dashboard" element={<ProtectedRoute><PatientDashboard /></ProtectedRoute>} />
 
-        <Route
-          path="/doctor-dashboard"
-          element={<ProtectedRoute><DoctorDashboard /></ProtectedRoute>}
-        />
+        <Route path="/admin/register-doctor" element={<ProtectedRoute><RegisterDoctor /></ProtectedRoute>} />
+        <Route path="/admin/appointments" element={<ProtectedRoute><ViewAppointments /></ProtectedRoute>} />
+        <Route path="/admin/patients" element={<ProtectedRoute><ViewPatients /></ProtectedRoute>} />
+        <Route path="/admin/doctors" element={<ProtectedRoute><ViewDoctors /></ProtectedRoute>} />
 
-        <Route
-          path="/patient-dashboard"
-          element={<ProtectedRoute><PatientDashboard /></ProtectedRoute>}
-        />
+        <Route path="/find-doctor" element={<ProtectedRoute><DoctorSearch /></ProtectedRoute>} />
+        <Route path="/book-appointment" element={<ProtectedRoute><BookAppointment /></ProtectedRoute>} />
+        <Route path="/patient-appointments" element={<ProtectedRoute><AppointmentHistory /></ProtectedRoute>} />
+        <Route path="/current-appointment" element={<ProtectedRoute><CurrentAppointment /></ProtectedRoute>} />
 
-        {/* ADMIN */}
-        <Route
-          path="/admin/register-doctor"
-          element={<ProtectedRoute><RegisterDoctor /></ProtectedRoute>}
-        />
-
-        <Route
-          path="/admin/appointments"
-          element={<ProtectedRoute><ViewAppointments /></ProtectedRoute>}
-        />
-
-        <Route
-          path="/admin/patients"
-          element={<ProtectedRoute><ViewPatients /></ProtectedRoute>}
-        />
-
-        <Route
-          path="/admin/doctors"
-          element={<ProtectedRoute><ViewDoctors /></ProtectedRoute>}
-        />
-
-        {/* PATIENT */}
-        <Route
-          path="/find-doctor"
-          element={<ProtectedRoute><DoctorSearch /></ProtectedRoute>}
-        />
-
-        <Route
-          path="/book-appointment"
-          element={<ProtectedRoute><BookAppointment /></ProtectedRoute>}
-        />
-
-        <Route
-          path="/patient-appointments"
-          element={<ProtectedRoute><AppointmentHistory /></ProtectedRoute>}
-        />
-
-        <Route
-          path="/current-appointment"
-          element={<ProtectedRoute><CurrentAppointment /></ProtectedRoute>}
-        />
-
-        {/* DOCTOR */}
-        <Route
-          path="/doctor/manage-slots"
-          element={<ProtectedRoute><ManageSlots /></ProtectedRoute>}
-        />
-
-        <Route
-          path="/doctor-appointments"
-          element={<ProtectedRoute><DoctorAppointments /></ProtectedRoute>}
-        />
-
+        <Route path="/doctor/manage-slots" element={<ProtectedRoute><ManageSlots /></ProtectedRoute>} />
+        <Route path="/doctor-appointments" element={<ProtectedRoute><DoctorAppointments /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   );

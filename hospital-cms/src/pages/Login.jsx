@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { login } from "../services/authApi";
 
 function Login() {
@@ -17,7 +17,7 @@ function Login() {
     e.preventDefault();
     setError("");
 
-    // 🔍 FRONTEND VALIDATION (added only)
+    // 🔍 FRONTEND VALIDATION (UNCHANGED)
     if (!email || !password) {
       setError("Email and password are required");
       return;
@@ -68,6 +68,13 @@ function Login() {
           value={password}
           onChange={e => setPassword(e.target.value)}
         />
+
+        {/* ✅ FORGOT PASSWORD LINK (ADDED ONLY) */}
+        <div className="text-end mb-3">
+          <Link to="/forgot-password" style={{ fontSize: "14px" }}>
+            Forgot Password?
+          </Link>
+        </div>
 
         <button className="btn btn-primary w-100">Login</button>
       </form>
