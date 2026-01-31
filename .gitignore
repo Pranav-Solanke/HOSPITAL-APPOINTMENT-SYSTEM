@@ -1,14 +1,21 @@
 # Visual Studio
 .vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# .NET build output
+# Build results
 bin/
 obj/
 
-# Node
-node_modules/
+# Logs
+*.log
 
-# OS files
+# Debug / Release
+[Dd]ebug/
+[Rr]elease/
+
+# OS
 Thumbs.db
 .DS_Store
-
