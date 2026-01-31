@@ -53,7 +53,7 @@ function BookAppointment() {
         <input
   type="date"
   className="form-control mb-3"
-  min={new Date().toISOString().split("T")[0]}   // ✅ TODAY
+  min={new Date().toISOString().split("T")[0]}   
   onChange={(e) => setDate(e.target.value)}
 />
 

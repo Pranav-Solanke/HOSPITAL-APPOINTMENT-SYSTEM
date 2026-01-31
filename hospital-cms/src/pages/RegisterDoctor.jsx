@@ -12,6 +12,13 @@ function RegisterDoctor() {
     password: "",
   });
 
+  // ✅ Error state (frontend only)
+  const [error, setError] = useState("");
+
+  // ✅ Validation regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const nameRegex = /^[a-zA-Z\s]+$/;
+
   useEffect(() => {
     getSpecializations().then(setSpecializations);
   }, []);
@@ -22,8 +29,38 @@ function RegisterDoctor() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    const { fullName, email, phoneNumber, specializationId, password } = form;
+
+    // 🔍 FRONTEND VALIDATION (added only)
+    if (!fullName || !email || !specializationId || !password) {
+      setError("All required fields must be filled");
+      return;
+    }
+
+    if (!nameRegex.test(fullName)) {
+      setError("Doctor name must contain only letters and spaces");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (phoneNumber && !/^[0-9]{10}$/.test(phoneNumber)) {
+      setError("Phone number must be exactly 10 digits");
+      return;
+    }
 
     try {
+      // ✅ EXISTING BACKEND LOGIC — UNCHANGED
       await registerDoctor(form);
       alert("✅ Doctor registered successfully");
 
@@ -45,6 +82,9 @@ function RegisterDoctor() {
 
       <div className="container mt-4">
         <h3>Register New Doctor</h3>
+
+        {/* ✅ Error message display */}
+        {error && <p className="text-danger">{error}</p>}
 
         <form onSubmit={handleSubmit} className="col-md-6 mt-3">
           <input
