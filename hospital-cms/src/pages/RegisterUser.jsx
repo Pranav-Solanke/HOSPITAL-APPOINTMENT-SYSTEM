@@ -12,7 +12,6 @@ function RegisterUser() {
     password: "",
   });
 
-  // ✅ NEW STATES (added only)
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -23,7 +22,37 @@ function RegisterUser() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ VALIDATION CHECK FOR BUTTON
+  // ✅ Email validation when user leaves field
+  const validateEmail = () => {
+    if (form.email && !emailRegex.test(form.email)) {
+      alert("Invalid email format");
+    }
+  };
+
+  const validateAge = () => {
+    if (form.age && (form.age < 1 || form.age > 100)) {
+      alert("Age must be between 1 and 100");
+    }
+  };
+
+  const validatePhone = () => {
+    if (form.phoneNumber && !/^[0-9]{10}$/.test(form.phoneNumber)) {
+      alert("Phone number must be 10 digits");
+    }
+  };
+
+  const validatePassword = () => {
+    if (form.password && form.password.length < 8) {
+      alert("Password must be at least 8 characters");
+    }
+  };
+
+  const validateConfirmPassword = () => {
+    if (confirmPassword && form.password !== confirmPassword) {
+      alert("Passwords do not match");
+    }
+  };
+
   const isValid =
     form.fullName &&
     form.age >= 1 &&
@@ -38,10 +67,8 @@ function RegisterUser() {
     e.preventDefault();
     setError("");
 
-    const { fullName, age, gender, email, phoneNumber, password } = form;
-
     if (!isValid) {
-      setError("Please fill all fields correctly");
+      alert("Please fill all fields correctly");
       return;
     }
 
@@ -87,6 +114,7 @@ function RegisterUser() {
             placeholder="Age"
             value={form.age}
             onChange={handleChange}
+            onBlur={validateAge}
           />
 
           <select
@@ -107,6 +135,7 @@ function RegisterUser() {
             placeholder="Email"
             value={form.email}
             onChange={handleChange}
+            onBlur={validateEmail}
           />
 
           <input
@@ -115,9 +144,9 @@ function RegisterUser() {
             placeholder="Phone"
             value={form.phoneNumber}
             onChange={handleChange}
+            onBlur={validatePhone}
           />
 
-          {/* PASSWORD WITH EYE BUTTON */}
           <div className="mb-2 position-relative">
             <input
               className="form-control"
@@ -126,6 +155,7 @@ function RegisterUser() {
               placeholder="Password"
               value={form.password}
               onChange={handleChange}
+              onBlur={validatePassword}
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
@@ -142,13 +172,13 @@ function RegisterUser() {
             </span>
           </div>
 
-          {/* CONFIRM PASSWORD */}
           <input
             className="form-control mb-3"
             type={showPassword ? "text" : "password"}
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
+            onBlur={validateConfirmPassword}
           />
 
           <button
